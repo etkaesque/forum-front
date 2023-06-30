@@ -2,26 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.background {
+
+    min-height: 100vh;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 30%, rgba(179,32,52,0.4) 100%), url("../../public/images/spaceBC.jpg");
+    background-repeat: repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+
+
+.sectionStyles {
+    background: #1a1a1b;
+    color: white;
+    font-size: 1.25em;
+    z-index: 10;
+    border: solid 1px #343536;
+    border-radius: 10px;
+    padding: 50px 20px;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.mainColorText {
+    color: rgba(80,35,217,1); 
 }
+
+.mainColorBackground {
+    background-color: rgba(80,35,217,1); 
+}
+
+.secondaryColorBackground {
+    background-color: rgba(179,32,52,1);
+}
+
