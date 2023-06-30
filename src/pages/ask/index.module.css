@@ -1,0 +1,30 @@
+.title {
+
+
+    color: black;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    height: 39px;
+    padding: 10px;
+    font-size: 1rem;
+
+
+    background: #1a1a1b;
+    color: white;
+    border: solid 2px #343536;
+    border-radius: 10px;
+
+    
+}
+
+.content {
+    padding: 10px;
+    min-height: 600px;
+    font-size: 1rem;
+
+    
+    background: #1a1a1b;
+    color: white;
+    border: solid 2px #343536;
+    border-radius: 10px;
+}
