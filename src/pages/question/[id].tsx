@@ -208,7 +208,7 @@ async function handleDownvote(id:any) {
               <article className=" w-full mx-10">
               
               <span className="questionAuthor">
-                      Asked by {question.questionAuthorName} on {" "}
+                      Asked by {question.author.name} on {" "}
                       {question.date_created.toString().split("T")[0]}
               </span>
   
