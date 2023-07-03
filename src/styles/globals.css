@@ -63,10 +63,22 @@
 
 }
 
+.sectionStyles3 {
+
+    background: #1a1a1b;
+    color: white;
+    font-size: 1.25em;
+    z-index: 10;
+    border: solid 1px #343536;
+    border-radius: 7px;
+    padding: 20px 20px;
+
+}
+
 
 .sectionStyles2:hover {
     border: solid 1px  #6a6d6f;
-    background: #1a1a1be9;
+    background: #1a1a1bd4;
 }
 
 .mainColorText {

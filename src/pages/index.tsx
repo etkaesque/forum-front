@@ -31,7 +31,7 @@ export default function Home({ data, count }: { data: questionType[] }) {
           data.map((question) => {
             return (
               <article className="sectionStyles2 relative max-w-7xl w-3/4 mx-10">
-                <Link className="questionStyle" href={"/"}>
+                <Link className="questionStyle" href={`question/${question.id}`}>
                   <span className="questionAuthor">
                     Asked by {question.authorIdObect.name} on{" "}
                     {question.date_created.toString().split("T")[0]}

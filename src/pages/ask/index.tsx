@@ -8,6 +8,12 @@ import { space } from "postcss/lib/list";
 
 export default function Home() {
 
+    const [formData, setFormData] = useState({
+      title: "",
+      content: ""
+
+    });
+
     const [verified, setVerified] = useState(false)
     const [token, setToken] = useState<string | null>(null); // token 
 
@@ -40,12 +46,7 @@ export default function Home() {
     // if token valid display page if not display: Only signin in users can post a question, click astronaut to log in.
 
     const router = useRouter()
-    const [formData, setFormData] = useState({
-      title: "",
-      content: ""
-
-    });
-  
+   
     function handleChange(event: any) {
       const { name, value } = event.target;
   

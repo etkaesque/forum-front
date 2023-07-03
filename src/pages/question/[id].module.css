@@ -1,0 +1,24 @@
+.content {
+    width: 100%;
+    padding: 10px;
+    min-height: 300px;
+    font-size: 1rem;
+    background: #1a1a1b;
+    color: white;
+    border: solid 2px #343536;
+    border-radius: 10px;
+}
+
+
+
+
+.button {
+    background-image: linear-gradient(180deg, rgba(80,35,217,0) 30%, rgba(80,35,217,0.85) 100%);
+    padding: 10px 20px 10px 20px;
+    border-radius: 50px 50px 50px 50px;
+    transition: background-color 0.75s;
+}
+
+.button:hover {
+    background-color: rgba(80, 35, 217, 0.752); 
+}
