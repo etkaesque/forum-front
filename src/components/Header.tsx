@@ -8,24 +8,8 @@ import axios from "axios";
 
 export default function Header() {
   const router = useRouter();
-  const [logInPopUp, setLogInPopUp] = useState(false); // login&register pop up
-
   const [token, setToken] = useState<string | null>(null); // token 
   const [userData, setUserData] = useState<{ name: string } | null>(null);
-
-  const [serverResponse, setServerResponse] = useState<string>("");
-  const [isLogin, setIslogin] = useState(false);
-  const [loginUser, setLoginUser] = useState({
-    email: "",
-    password: "",
-  });
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-  });
-
 
   const deleteTokenAndData = () => {
     console.log("deleleting")
@@ -80,86 +64,21 @@ export default function Header() {
   
   },[token])
 
-  const handleLoginUser = (event: any) => {
-    const { name, type, value } = event.target;
+  const handleRedirectToLogin = () => {
+    router.push("/login")
+  }
 
-    setLoginUser((prevFormData) => {
-      return {
-        ...prevFormData,
-        [name]: value,
-      };
-    });
-  };
 
-  const handleLoginSumbit = async (event: any) => {
-    event.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
-        loginUser
-      );
 
-      localStorage.setItem("jwt_token", response.data.jwt_token);
-      localStorage.setItem(
-        "jwt_refresh_token",
-        response.data.jwt_refresh_token
-      );
-
-      router.reload()
-    } catch (error) {
-      console.log("could not connect to server: ", error);
-    }
-  };
-
-  const handleRegisterSubmit = async (event: any) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/signUp",
-        newUser
-      );
-
-      localStorage.setItem("jwt_token", response.data.jwt_token);
-      localStorage.setItem(
-        "jwt_refresh_token",
-        response.data.jwt_refresh_token
-      );
-
-      router.reload()
-    } catch (error: any) {
-      setServerResponse(error.response.data.response);
-      console.log("could not validate new user: ", error);
-    }
-  };
-
-  const handleChange = (event: any) => {
-    const { name, type, value } = event.target;
-
-    setNewUser((prevFormData) => {
-      return {
-        ...prevFormData,
-        [name]: value,
-      };
-    });
-  };
-
-  const changeSection = (event: any) => {
-    setIslogin(!isLogin);
-  };
-
-  const handleLoginPopUp = () => {
-    setLogInPopUp(!logInPopUp);
-  };
 
   return (
-    <header className="group relative flex  justify-center mx-auto w-full h-auto">
-      <div className="absolute inset-0 group-hover:bg-black opacity-50 z-0 transition duration-500 ease-in-out"></div>
-      <div className="relative grid grid-cols-3 items-center max-w-7xl mx-10 bg-transparent justify-between py-7 px-5 w-full z-10">
+    <header className="group relative flex  justify-center mx-auto sm:w-full h-auto">
+      <div className="absolute inset-0 group-hover:bg-black opacity-50 z-0 transition duration-500 ease-in-out w-screen"></div>
+      <div className="relative grid grid-rows-3  sm:grid-cols-3 sm:grid-rows-1 items-center max-w-7xl mx-10 bg-transparent justify-between py-7 px-5 w-full z-10">
         <Link rel="" href={`/`}>
-          <div className=" flex items-center gap-x-2 text-white text-3xl tracking-widest  transition duration-600 ease-in-out">
-            <img src="/images/spacecat44.png" alt="" className="w-16 h-16" />
+          <div className=" flex items-center gap-x-2 text-white text-2xl tracking-widest  transition duration-600 ease-in-out">
+            <img src="/images/spacecat44.png" alt="" className="w-12 h-12" />
             <span>Space</span> <span className={styles.talk}>Talk</span>
           </div>
         </Link>
@@ -194,7 +113,7 @@ export default function Header() {
         
         </div>) : (
         <div className="flex justify-end text-white transition duration-500 ease-in-out">
-          <button onClick={handleLoginPopUp} className={styles.loginLink}>
+          <button onClick={handleRedirectToLogin} className={styles.loginLink}>
             <svg className="w-12 h-12" viewBox="0 0 64 64">
               <path
                 d="m9.19 25s.88-7.71 6.46-11.79 9.42-5.42 17.58-4.92 11.59 5.25 13.59 7.33 3.18 8.6 3.18 8.6 1.42.37 1.46 1.25l.09 2a9.2 9.2 0 0 0 2.16-.09c0-.16-.58-12.66-.58-12.66s-2.29-.75-2.38-2.5 1.38-3.38 3.84-2.59.71 4.59.71 4.59 1.5 14.5 1.37 15.08-.71.75-1 .83-4-.2-4-.2a9.55 9.55 0 0 1 -.21 3c-.33.55-2 .88-2 .88a14.19 14.19 0 0 1 -.46 3.37 5.33 5.33 0 0 1 -1 2.21s2.54 6.45 2.5 6.83-5.88 5.83-12.75 8.37-14.75.8-19-1.7-7.3-5.88-7.5-6.5 2-5.34 2-5.34-1.13-2.33-1.79-4a27.18 27.18 0 0 1 -1-2.91s-2.46-.63-2.68-1.21-.63-6.88-.34-7.38 1.38-.55 1.75-.55z"
@@ -324,208 +243,7 @@ export default function Header() {
             </svg>
           </button>
         </div>)}
-
-
-
-
-
-
-
-
       </div>
-
-      {logInPopUp && (
-        <div className={styles.userSectionWrapper}>
-        <div className={styles.userSection}>
-          {isLogin ? (
-            <aside className="w-full mx-2">
-              <div className="flex flex-col content-center items-center justify-center m-6">
-                <h1 className="text-2xl ">Register</h1>
-                <button
-                  onClick={changeSection}
-                  className="text-green-500 hover:text-green-800"
-                >
-                  Already have an account? Log In here.
-                </button>
-              </div>
-
-              <div>
-                <form onSubmit={handleRegisterSubmit}>
-                  <div className="mb-6">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block mb-2 text-sm font-medium text-white dark:text-gray-300"
-                      >
-                        First name
-                      </label>
-                      <input
-                        onChange={handleChange}
-                        value={newUser.name}
-                        type="text"
-                        id="name"
-                        name="name"
-                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-medium  text-white dark:text-gray-300"
-                    >
-                      Email address
-                    </label>
-                    <input
-                      onChange={handleChange}
-                      value={newUser.email}
-                      type="email"
-                      id="email"
-                      name="email"
-                      className="bg-white border border-gray-300  text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="john.doe@company.com"
-                      required
-                    />
-                  </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-white dark:text-gray-300"
-                    >
-                      Password
-                    </label>
-                    <input
-                      onChange={handleChange}
-                      value={newUser.password}
-                      type="password"
-                      id="password"
-                      name="password"
-                      className="bg-white border border-gray-300  text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="•••••••••"
-                      required
-                    />
-                  </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="confirm_password"
-                      className="block mb-2 text-sm font-medium  text-white dark:text-gray-300"
-                    >
-                      Confirm password
-                    </label>
-                    <input
-                      onChange={handleChange}
-                      value={newUser.confirm_password}
-                      type="password"
-                      id="confirm_password"
-                      name="confirm_password"
-                      className="bg-white border border-gray-300  text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="•••••••••"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex justify-evenly">
-                    
-                  <button
-                    type="submit"
-                    className="text-white mainColorBackground hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  
-                    Submit
-                  </button>
-
-                  <button 
-                  className="text-white mainColorBackground hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleLoginPopUp}>
-
-                    Cancel
-
-                  </button>
-                  </div>
-
-                </form>
-
-                <div className="text-red-600 flex justify-center my-2">
-              
-                  {serverResponse && (
-                    <p className={styles.serverRes}>{serverResponse}</p>
-                  )}
-                </div>
-              </div>
-            </aside>
-          ) : (
-            <aside className="w-full mx-2">
-              <div className="flex flex-col content-center items-center justify-center m-6">
-                <h1 className="text-2xl ">Log In</h1>
-                <button
-                  onClick={changeSection}
-                  className="text-green-500 hover:text-green-800"
-                >
-                  Don't have an account? Click here!
-                </button>
-              </div>
-
-              <form onSubmit={handleLoginSumbit}>
-                <div className="mb-6">
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-white dark:text-gray-300"
-                  >
-                    Email address
-                  </label>
-                  <input
-                    onChange={handleLoginUser}
-                    value={loginUser.email}
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="john.doe@company.com"
-                    required
-                  />
-                </div>
-                <div className="mb-6">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-white dark:text-gray-300"
-                  >
-                    Password
-                  </label>
-                  <input
-                    onChange={handleLoginUser}
-                    value={loginUser.password}
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="•••••••••"
-                    required
-                  />
-                </div>
-
-                <div className="flex justify-evenly">
-
-                <button
-                  type="submit"
-                  className="text-white mainColorBackground hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Submit
-                </button>
-                <button 
-                  className="text-white mainColorBackground hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleLoginPopUp}>
-
-                    Cancel
-
-                  </button>
-
-                </div>
-
-               
-              </form>
-            </aside>
-          )}
-        </div>
-        </div>
-      )}
     </header>
   );
 }

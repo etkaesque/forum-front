@@ -100,7 +100,7 @@ export default function Home() {
          
             <form action="submit" onSubmit={handleSumbit} className="flex flex-col gap-3">
   
-                <input placeholder="Title" onChange={handleChange} className={styles.title}  name="title" value={formData.title} maxLength={50} required />
+                <input placeholder="Title" onChange={handleChange} className={styles.title}  name="title" value={formData.title} maxLength={150} required />
 
                 <textarea placeholder="Question" onChange={handleChange} className={styles.content}  name="content" value={formData.content} maxLength={1000} required></textarea>
 
