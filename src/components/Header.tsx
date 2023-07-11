@@ -73,9 +73,9 @@ export default function Header() {
 
 
   return (
-    <header className="group relative flex  justify-center mx-auto sm:w-full h-auto">
+    <header className="group relative flex  justify-center mx-auto sm:w-full h-auto mb-6">
       <div className="absolute inset-0 group-hover:bg-black opacity-50 z-0 transition duration-500 ease-in-out w-screen"></div>
-      <div className="relative grid grid-rows-3  sm:grid-cols-3 sm:grid-rows-1 items-center max-w-7xl mx-10 bg-transparent justify-between py-7 px-5 w-full z-10">
+      <div className="relative grid grid-rows-3 sm:grid-cols-3 sm:grid-rows-1 justify-items-center items-center max-w-7xl mx-10 bg-transparent  py-7 px-5 w-full z-10">
         <Link rel="" href={`/`}>
           <div className=" flex items-center gap-x-2 text-white text-2xl tracking-widest  transition duration-600 ease-in-out">
             <img src="/images/spacecat44.png" alt="" className="w-12 h-12" />
@@ -84,24 +84,16 @@ export default function Header() {
         </Link>
 
         <div className="text-white text-lg flex justify-evenly">
-          <Link
-            className="hover:opacity-80 transition duration-500 ease-in-out"
-            href={"/"}
-          >
-            Home
-          </Link>
+          
           <Link
             className="hover:opacity-80 transition duration-500 ease-in-out"
             href={"/"}
           >
             Forum
           </Link>
-          <Link
-            className="hover:opacity-80 transition duration-500 ease-in-out"
-            href={"/"}
-          >
-            Travel
-          </Link>
+
+  
+
         </div>
 
         {userData ? 
@@ -243,6 +235,7 @@ export default function Header() {
             </svg>
           </button>
         </div>)}
+
       </div>
     </header>
   );

@@ -33,21 +33,30 @@ export default function Home({ data, count }: { data: questionType[], count: num
 
 
   return (
-    <div className="background">
+    <div className="background w-screen">
       <Header />
 
-      <main className="flex flex-col items-center gap-y-4">
+      <main className="flex flex-col items-center gap-y-3">
         <section className="  flex flex-col gap-y-6 relative sectionStyles max-w-7xl w-3/4 mx-10 ">
-          <div className=" ustify-end items-center text-center  flex flex-col sm:flex-row justify-center items-end gap-x-2">
-            <Link href={"/ask"} className="button">
-              Ask here
-            </Link>
-
-            <span>or browse all {count} questions</span>
+          <div className=" justify-end items-center text-center flex flex-col sm:flex-row justify-center items-end gap-x-2">
+    
+            <span>Browse all {count} questions</span>
           </div>
-          <div className="flex gap-2 w-full text-xs justify-end items-center">
-     
-            Change to: <button className="button" onClick={handleAnsweredOnly}>{unansweredOnly? "Unanswered Only" : "All"}</button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full text-sm justify-between items-center gap-y-6">
+
+          
+
+              <div>
+              
+                 Change to:  <button className="button" onClick={handleAnsweredOnly}>{unansweredOnly? "Unanswered Only" : "All Questions"}</button>
+
+              </div>
+
+                  
+            <Link href={"/ask"} className="button w-full sm:w-auto text-center">
+                Ask here
+              </Link>
+      
         
           </div>
         </section>
