@@ -4,12 +4,13 @@
 
 
 
+
 .background {
 
     min-height: 100vh;
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 30%, rgba(179,32,52,0.4) 100%), url("../../public/images/spaceBC.jpg");
-    background-repeat: repeat;
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: cover;
     row-gap: 2em;
     padding-bottom: 50px;
     width: 100vw;
