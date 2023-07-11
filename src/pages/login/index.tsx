@@ -58,7 +58,10 @@ export default function Login() {
     try {
       const response = await axios.post(
         "https://forum-back.onrender.com/login",
-        loginUser
+        {
+          email: loginUser.email,
+          password: loginUser.password
+        }
       );
 
       localStorage.setItem("jwt_token", response.data.jwt_token);
