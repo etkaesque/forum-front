@@ -114,7 +114,7 @@ export default function Home({ data, count }: { data: questionType[], count: num
 }
 
 export async function getServerSideProps() {
-  const response = await axios.get("http://localhost:8080/allQuestions");
+  const response = await axios.get("https://forum-back.onrender.com/allQuestions");
   const data = response.data.questions;
   const count = response.data.questionCount;
 

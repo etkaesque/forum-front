@@ -30,7 +30,7 @@ export default function Home() {
         if(token) {
           console.log("try token", token)
           try {
-            const response = await axios.post("http://localhost:8080/verifyToken", {}, {headers: {
+            const response = await axios.post("https://forum-back.onrender.com/verifyToken", {}, {headers: {
               authorization: token
             }})
             setVerified(true)
@@ -66,7 +66,7 @@ export default function Home() {
   
       try {
         const response = await axios.post(
-          "http://localhost:8080/askQuestion",
+          "https://forum-back.onrender.com/askQuestion",
           formData, 
           {headers: 
             {

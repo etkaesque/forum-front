@@ -57,7 +57,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/login",
+        "https://forum-back.onrender.com/login",
         loginUser
       );
 
@@ -69,7 +69,7 @@ export default function Login() {
 
       router.push("/")
     } catch (error) {
-      console.log("could not connect to server: ", error);
+      console.log("Something went wrong", error);
     }
   };
 
@@ -78,7 +78,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/signUp",
+        "https://forum-back.onrender.com/signUp",
         newUser
       );
 

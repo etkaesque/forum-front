@@ -34,7 +34,7 @@ export default function Header() {
 
     const getUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user", {
+        const response = await axios.get("https://forum-back.onrender.com/user", {
           headers: {
             authorization: token
           }

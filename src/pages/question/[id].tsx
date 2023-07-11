@@ -45,7 +45,7 @@ useEffect(() => {
       if(token) {
         console.log("try token", token)
         try {
-          const response = await axios.post("http://localhost:8080/verifyToken", {}, {headers: {
+          const response = await axios.post("https://forum-back.onrender.com/verifyToken", {}, {headers: {
             authorization: token
           }})
 
@@ -63,7 +63,7 @@ useEffect(() => {
 
   const deleteAnswer = async (answerId : string, questionId : string) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/removeAnswer?answerId=${answerId}&questionId=${questionId}`, {
+      const response = await axios.delete(`https://forum-back.onrender.com/removeAnswer?answerId=${answerId}&questionId=${questionId}`, {
         headers: {authorization: token}
       });
       getQuestion();
@@ -76,7 +76,7 @@ useEffect(() => {
   const deleteQuestion = async (questionId : string) => {
 
     try {
-      const response = await axios.delete(`http://localhost:8080/removeQuestion/${questionId}`, {
+      const response = await axios.delete(`https://forum-back.onrender.com/removeQuestion/${questionId}`, {
         headers: {authorization: token}
       });
       router.push("/")
@@ -97,7 +97,7 @@ useEffect(() => {
       if(verified) {
 
         const response = await axios.get(
-          `http://localhost:8080/question/${router.query.id}/answers/v`,
+          `https://forum-back.onrender.com/question/${router.query.id}/answers/v`,
           {headers: 
             {
             authorization: token
@@ -109,7 +109,7 @@ useEffect(() => {
       } else {
         
         const response = await axios.get(
-        `http://localhost:8080/question/${router.query.id}/answers`,
+        `https://forum-back.onrender.com/question/${router.query.id}/answers`,
         
       );
 
@@ -156,7 +156,7 @@ async function handleSumbit(event: any) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/question/${router.query.id}/answer`,
+        `https://forum-back.onrender.com/question/${router.query.id}/answer`,
         formData, 
         {headers: 
           {
@@ -176,7 +176,7 @@ async function handleUpvote(id : string) {
 
     try {
         const response = await axios.put(
-          `http://localhost:8080/answer/${id}/upvote`,
+          `https://forum-back.onrender.com/answer/${id}/upvote`,
            {},
           {headers: 
             {
@@ -199,7 +199,7 @@ async function handleDownvote(id:any) {
     try {
         console.log("um")
         const response = await axios.put(
-          `http://localhost:8080/answer/${id}/downvote`,
+          `https://forum-back.onrender.com/answer/${id}/downvote`,
            {},
           {headers: 
             {
