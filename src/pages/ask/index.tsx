@@ -1,41 +1,82 @@
-import Header from "../../components/Header";
-import styles from "./index.module.css";
-import Link from "next/link";
+
+import { TextInput  } from '@mantine/core';
+import { Button } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { Textarea } from '@mantine/core';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useStore } from "@/store/state/store";
+import { postQuestion } from "../../store/plugins/api"
+import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
-import { space } from "postcss/lib/list";
+
+type post = {
+  title: string,
+  content: string
+}
 
 export default function Home() {
+  const setLoader = useStore((state) => state.setLoader)
+  
+  const mutation = useMutation({
+    mutationFn: postQuestion,
+    onMutate: () => setLoader(true),
+    onSettled: () => setLoader(false),
+    onError: (error : any) => console.log("bad stuff", error),
+    onSuccess: (data :any) => {
+      const id = data.response.id
+      router.push(`/question/${id}`)
+    },
+    
+  })
+  
+  const router = useRouter()
+  const maxInput = 35
+  const maxContent = 1000
 
-    const [formData, setFormData] = useState({
-      title: "",
-      content: ""
-
+    const form = useForm({
+      initialValues: {
+        title: "",
+        content: ""
+      },
+      validate: {
+        title: (value) => {
+          if(value.length > maxInput) {
+            return 'Title is too long' 
+          }
+          if(value.length < 5) {
+            return 'Title is too short' 
+          }
+        },
+        content: (value) => {
+          if(value.length > maxContent) {
+            return 'Content is too long' 
+          }
+          if(value.length < 5) {
+            return 'Content is too short' 
+          }
+        }
+    },
     });
 
     const [verified, setVerified] = useState(false)
-    const [token, setToken] = useState<string | null>(null); // token 
+    const [token, setToken] = useState<string | null>(null);
+    const authentication = useStore((state) => state.authentication)
 
     useEffect(() => {
-      let localToken = localStorage.getItem("jwt_token");
-      if(localToken) {
-        console.log("setting a token", localToken)
-        setToken(localToken)
-      }
-    }, []);
+      const token : string | null = localStorage.getItem("jwt_token")
+      setToken(token)
+    }, [authentication]);
     
     useEffect(() => {
       const verify = async () => {
         if(token) {
-          console.log("try token", token)
           try {
-            const response = await axios.post("https://forum-back.onrender.com/verifyToken", {}, {headers: {
+            await axios.post(`${process.env.SERVER_URL}/verifyToken`, {}, {headers: {
               authorization: token
             }})
             setVerified(true)
           } catch (error) {
-            console.log(error)
             setVerified(false)
           }
         }
@@ -43,81 +84,45 @@ export default function Home() {
       verify()
     }, [token]);
 
-    // if token valid display page if not display: Only signin in users can post a question, click astronaut to log in.
-
-    const router = useRouter()
-   
-    function handleChange(event: any) {
-      const { name, value } = event.target;
-  
-  
-      setFormData((prevFormData) => {
-        return {
-          ...prevFormData,
-          [name]:value
-        };
-      });
-      console.log(formData);
-    }
-  
-    async function handleSumbit(event: any) {
-      event.preventDefault(); 
-      console.log("Sending a form to server");
-  
-      try {
-        const response = await axios.post(
-          "https://forum-back.onrender.com/askQuestion",
-          formData, 
-          {headers: 
-            {
-            authorization: token
-            }
-          })
-        
-
-        router.push('/');
-        
-  
-      } catch (error) {
-        console.log("Failed to save data to database, error: ", error);
-      }
-    }
-
-    console.log(verified)
   return (
     <div className="background">
-      <Header />
-
       <main className="flex justify-center ">
-      
-        <section className=" sectionStyles relative max-w-7xl  w-3/4  mx-10">
-
+        <section className=" myB p-5 relative max-w-7xl  w-3/4  mx-10">
           {verified ? (
           <>
-          
-          <h1 className="text-2xl mb-3 ">Post A Question</h1>
+          <h1 className="text-2xl mb-3 ">Post a question</h1>
 
-         
-            <form action="submit" onSubmit={handleSumbit} className="flex flex-col gap-3">
-  
-                <input placeholder="Title" onChange={handleChange} className={styles.title}  name="title" value={formData.title} maxLength={150} required />
+            <form action="submit" onSubmit={form.onSubmit((form) => mutation.mutate(form))} className="flex flex-col gap-3">
 
-                <textarea placeholder="Question" onChange={handleChange} className={styles.content}  name="content" value={formData.content} maxLength={1000} required></textarea>
-
+                <TextInput   
+                  {...form.getInputProps('title')}
+                placeholder="Choose your title" 
+                label="Title"
+                name="title"      
+                required
+                maxLength={maxInput}
+                withAsterisk  />
+                           
+                <Textarea
+                  {...form.getInputProps('content')}
+                 placeholder="Type what is on your mind"
+                 label="Content"
+                 name="content"
+                 autosize
+                 minRows={20}
+                 maxLength={maxContent}
+                 required
+                />
+           
                 <div className="flex justify-end">
-
-                <button type="submit" className="text-white mainColorBackground hover:opacity-70 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-auto sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Post
-                </button>
-
+                  <Button type="submit">
+                    Post
+                  </Button>
                 </div>
                 
-
             </form>
 
-          </>) : (<><h1>Only registered user can post questions.</h1></>)}
-
-         
+          </>) : (<><h1>Only registered user can post.</h1></>)}
         </section>
       </main>
     </div>
