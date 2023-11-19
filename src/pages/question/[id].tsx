@@ -10,21 +10,7 @@ import { useForm } from '@mantine/form';
 import {fetchQuestion, postAnswer} from "../../store/plugins/api"
 import { Button, Textarea } from '@mantine/core';
 import AnswerCard from "../../components/Answer"
-
-type questionType = {
-    id: string;
-    title: string;
-    content: string;
-    date_created: Date;
-    author: {
-      name: string,
-      id:string,
-    };
-    authorIdObect: {};
-    questionAuthorName: String,
-    answersCount: number,
-    question_answers: Array<any>
-  };
+import Delete from "../../components/Buttons/Delete";
 
 export default function Question() {
   const maxContent = 1000
@@ -56,6 +42,8 @@ export default function Question() {
   const [currentUser, setCurrentUser] = useState("")
   const [token, setToken] = useState<string | null>(null); 
   const authentication = useStore((state) => state.authentication)
+  const setNotification = useStore((state) => state.setNotification)
+  const setUpdate = useStore((state) => state.setUpdate)
 
   useEffect(() => {
     const token : string | null = localStorage.getItem("jwt_token")
@@ -79,14 +67,19 @@ export default function Question() {
     verify()
   }, [token]);
 
-  let {data, isSuccess, isPending} = useQuery({ queryKey: ['fetchQuestion', routerId,update], queryFn: async () => {
+  let {data, isPending, isSuccess,isError, error } = useQuery({ queryKey: ['fetchQuestion', routerId, update], queryFn: async () => {
     const data = await fetchQuestion(routerId)
     if(!data) return null
     return data
   }})
 
   useEffect(()=>{
+    
     if (isPending) setLoader(true);
+    if (isError) {
+      if(!error) return
+      setNotification({success:false, display:true, message: error.message})
+      setLoader(false)}
     if (isSuccess) setLoader(false);
   },[isPending,isSuccess])
 
@@ -94,9 +87,14 @@ export default function Question() {
   const mutation = useMutation({
       mutationFn: postAnswer,
       onMutate: () => setLoader(true),
-      onSettled: () => setLoader(false),
+      onSettled: () =>  {
+        setLoader(false)
+        setUpdate()
+      },
+      onSuccess: () => form.reset(),
       onError: (error : any) => console.log("bad stuff", error)
   })
+
 
   return (
     <div className="background">
@@ -124,13 +122,8 @@ export default function Question() {
               <span className="text-md my-2 opacity-70"> {data.answersCount} Answers</span>
               
               {(currentUser == data.author.id) && 
-                  <button  className="mx-3">
-                      <svg  className="opacity-70 hover:opacity-30" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <g id="Interface / Trash_Full">
-                            <path id="Vector" d="M14 10V17M10 10V17M6 6V17.8C6 18.9201 6 19.4798 6.21799 19.9076C6.40973 20.2839 6.71547 20.5905 7.0918 20.7822C7.5192 21 8.07899 21 9.19691 21H14.8031C15.921 21 16.48 21 16.9074 20.7822C17.2837 20.5905 17.5905 20.2839 17.7822 19.9076C18 19.4802 18 18.921 18 17.8031V6M6 6H8M6 6H4M8 6H16M8 6C8 5.06812 8 4.60241 8.15224 4.23486C8.35523 3.74481 8.74432 3.35523 9.23438 3.15224C9.60192 3 10.0681 3 11 3H13C13.9319 3 14.3978 3 14.7654 3.15224C15.2554 3.35523 15.6447 3.74481 15.8477 4.23486C15.9999 4.6024 16 5.06812 16 6M16 6H18M18 6H20" stroke="#ffffff" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </g>
-                      </svg>
-                  </button>}
+                  <Delete id={routerId}></Delete>
+                  }
               </div>
   
               </article>

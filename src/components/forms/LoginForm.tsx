@@ -1,10 +1,10 @@
 import { useForm } from '@mantine/form';
-import axios from 'axios';
 import { TextInput, Button, Group, Box } from '@mantine/core';
 import { PasswordInput } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useStore } from '@/store/state/store';
+import { loginUser } from '@/store/plugins/api';
 
 type Credentials ={
     email: string,
@@ -14,9 +14,10 @@ type Credentials ={
 export default function LoginForm() {
     const setModal = useStore((state) => state.setModal)
     const setAuthentication = useStore((state) => state.setAuthentication)
+    const setForm = useStore((state) => state.setForm)
     const [serverResponse, setServerResponse] = useState("")
     const mutation = useMutation({
-    mutationFn: fetchUser,
+    mutationFn: loginUser,
     onError: (error : any) => {
       setServerResponse(error.response.data.message)
       setAuthentication(false)},
@@ -58,18 +59,6 @@ export default function LoginForm() {
     },
   });
 
-    async function fetchUser(data : Credentials) {
-    const response = await axios.post(
-        `${process.env.SERVER_URL}/login`,
-        {
-          email: data.email,
-          password: data.password
-        }
-      );
-    
-    return response.data
-    }
-
     const handleSubmit = (values : Credentials) => {
     mutation.mutate(values)
   }
@@ -96,6 +85,10 @@ export default function LoginForm() {
             Login
         </Button>
       </Group>
+
+      <button onClick={() => setForm('register')} className='w-full flex justify-center'>
+        <span className='text-xs mt-2 text-indigo-700'>Are you a new user? Register here.</span>
+      </button>
       </form>
     </Box>
   );

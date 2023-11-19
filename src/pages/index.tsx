@@ -1,4 +1,4 @@
-import { questionType } from "../../types";
+import { questionType } from "../types";
 import QuestionCard from "@/components/Question";
 import Banner from "@/components/Banner";
 import { useQuery } from "@tanstack/react-query";
@@ -13,14 +13,19 @@ type questionData = {
 
 export default function Home() {
   const setLoader = useStore((state) => state.setLoader)
-  const { data, isPending, isSuccess } = useQuery({ queryKey: ['fetchQuestions'], queryFn: async () => {
+  const setNotification = useStore((state) => state.setNotification)
+  const { data, isPending, isSuccess,isError, error } = useQuery({ queryKey: ['fetchQuestions'], queryFn: async () => {
     const data : questionData = await fetchQuestions()
     return data
   } })
 
   useEffect(()=>{
     if (isPending) setLoader(true);
+    if (isError) {
+      setNotification({success:false, display:true, message: error.message})
+      setLoader(false)}
     if (isSuccess) setLoader(false);
+
   },[isPending,isSuccess])
 
   return (
@@ -29,7 +34,7 @@ export default function Home() {
         <Banner
         count={data ? data.questionCount : 0}
         ></Banner>
-        <div className="flex items-center flex-col gap-y-3 mb-10">
+        <div className="flex items-center w-3/4 flex-col gap-y-3 mb-10">
            {data && data.questions.map((question) => {
           return (
             <QuestionCard

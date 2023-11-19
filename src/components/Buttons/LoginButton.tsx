@@ -4,7 +4,6 @@ import { IconArrowRight } from '@tabler/icons-react';
 import { useStore } from '@/store/state/store';
 
 export default function LoginButton() {
-  const modal = useStore((state) => state.modal)
   const setModal = useStore((state) => state.setModal)
   const handleClick = () => {
     setModal()

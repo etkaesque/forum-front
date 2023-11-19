@@ -9,6 +9,11 @@
 @import "@mantine/dates/styles.css";
 
 
+.Qoverlay{
+    white-space: wrap;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
+}
+
 .myB {
     background-color: #FCEBE1;
 }
@@ -25,7 +30,7 @@
 
 p {
     word-wrap: break-word;
-     overflow-wrap: break-word;
+    overflow-wrap: break-word;
       
 }
 
@@ -60,12 +65,10 @@ p {
 }
 
 .questionLink {
-    display: grid;
-    grid-template-rows: 1fr 1fr 2fr;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
+   display: flex;
+   flex-direction: column;
+   row-gap: 10px;
+   overflow: hidden;
 }
 
 .sectionStyles3 {
