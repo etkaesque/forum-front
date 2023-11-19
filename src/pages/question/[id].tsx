@@ -17,7 +17,7 @@ export default function Question() {
   const setLoader = useStore((state) => state.setLoader)
   const update = useStore((state) => state.update)
   const router = useRouter();
-  let routerId : string;
+  let routerId : string = ""
   if(typeof router.query.id === 'string'){
     routerId = router.query.id
   }
