@@ -5,20 +5,21 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useStore } from '@/store/state/store';
 import { loginUser } from '@/store/plugins/api';
-
-type Credentials ={
-    email: string,
-    password: string,
-}
+import { LoginCredentials } from '@/types';
 
 export default function LoginForm() {
     const setModal = useStore((state) => state.setModal)
+    const setNotification = useStore((state) => state.setNotification)
     const setAuthentication = useStore((state) => state.setAuthentication)
     const setForm = useStore((state) => state.setForm)
     const [serverResponse, setServerResponse] = useState("")
     const mutation = useMutation({
     mutationFn: loginUser,
     onError: (error : any) => {
+      if(error.code === "ERR_NETWORK") {
+        setNotification({success:false, display:true, message: "Could not connect to a server. Try again later"})
+        return
+      }
       setServerResponse(error.response.data.message)
       setAuthentication(false)},
     onSuccess(data) {
@@ -59,7 +60,7 @@ export default function LoginForm() {
     },
   });
 
-    const handleSubmit = (values : Credentials) => {
+    const handleSubmit = (values : LoginCredentials) => {
     mutation.mutate(values)
   }
 

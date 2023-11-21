@@ -8,21 +8,19 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/store/state/store";
 import { postQuestion } from "../../store/plugins/api"
 import { useMutation } from '@tanstack/react-query';
+
 import axios from "axios";
 
-type post = {
-  title: string,
-  content: string
-}
-
 export default function Home() {
+
   const setLoader = useStore((state) => state.setLoader)
+  const setNotification = useStore((state) => state.setNotification)
   
   const mutation = useMutation({
     mutationFn: postQuestion,
     onMutate: () => setLoader(true),
     onSettled: () => setLoader(false),
-    onError: (error : any) => console.log("bad stuff", error),
+    onError: (error : Error) =>  setNotification({success:false, display:true, message: error.message}),
     onSuccess: (data :any) => {
       const id = data.response.id
       router.push(`/question/${id}`)

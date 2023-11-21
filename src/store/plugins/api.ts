@@ -1,24 +1,21 @@
 import axios from 'axios';
+import { LoginCredentials, Credentials, QuestionPost, AnswerPost, questionData } from '@/types';
 
-type post = {
-  title: string,
-  content: string
-}
-type Credentials ={
-  email: string,
-  password: string,
-}
-
-export async function loginUser(data : Credentials) {
-  const response = await axios.post(
+export async function loginUser(data : LoginCredentials) {
+  try {
+    const response = await axios.post(
       `${process.env.SERVER_URL}/login`,
       {
         email: data.email,
         password: data.password
       }
     );
-  
   return response.data
+
+  } catch(error) {
+    throw error
+
+  }
 }
 
 export async function fetchUser() {
@@ -39,7 +36,7 @@ export async function fetchUser() {
 
 }
 
-export async function createUser(data : {email : string, password: string, confirmPassword: string, name: string}) {
+export async function createUser(data : Credentials) {
   try {
     const response = await axios.post(
       `${process.env.SERVER_URL}/signUp`,
@@ -53,12 +50,11 @@ export async function createUser(data : {email : string, password: string, confi
   
   return response.data 
   } catch (err) {
-    console.log(err)
     throw Error("Could not create an user")
   }
 }
 
-export async function fetchQuestions() {
+export async function fetchQuestions(): Promise<questionData> {
 
   try {
     const response = await fetch(`${process.env.SERVER_URL}/allQuestions`);
@@ -71,7 +67,7 @@ export async function fetchQuestions() {
 
 }
 
-export async function postQuestion(form :post) {
+export async function postQuestion(form : QuestionPost) {
 
   try {
     const token = localStorage.getItem("jwt_token")
@@ -92,7 +88,7 @@ export async function postQuestion(form :post) {
   }
 }
 
-export async function postAnswer({form, routerId} : {form : {content: string}, routerId : string}){
+export async function postAnswer({form, routerId} : {form : AnswerPost, routerId : string}){
 
   try {
     const token = localStorage.getItem("jwt_token")

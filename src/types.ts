@@ -1,3 +1,8 @@
+
+export type questionData = {
+  questions: questionType[],
+  questionCount: number
+}
 export type questionType = {
     id:number;
     title: string;
@@ -7,19 +12,27 @@ export type questionType = {
     authorIdObect: {
       name: string
     };
-    answers: Array<string>
+    answers: string[]
   };
   
-export type questionData = {
-    questions: questionType[],
-    questionCount: number
+export type QuestionPost = {
+  title: string;
+  content: string;
 }
 
-export type post = {
-  title: string,
-  content: string
-}
+export type AnswerPost = Omit<QuestionPost, "title">
+
 export type Credentials ={
-  email: string,
-  password: string
+  name: string;
+  email : string;
+  password: string;
+  confirmPassword: string;
+}
+
+export type LoginCredentials = Pick<Credentials, "email" | "password">
+
+export type notificationType = {
+  success: boolean, 
+  message: string, 
+  display: boolean
 }

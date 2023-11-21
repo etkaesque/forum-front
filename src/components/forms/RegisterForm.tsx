@@ -5,13 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useStore } from '@/store/state/store';
 import { createUser} from "../../store/plugins/api"
+import { Credentials } from '@/types';
 
-type Credentials ={
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-}
 
 export default function RegisterForm() {
     const setModal = useStore((state) => state.setModal)
@@ -22,7 +17,6 @@ export default function RegisterForm() {
     const mutation = useMutation({
     mutationFn: createUser,
     onError: (error : any) => {
-      console.log(error)
       setServerResponse(error.response.data.message)
       setAuthentication(false)},
     onSuccess(data) {

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useMutation, useQuery } from '@tanstack/react-query';
-import styles from "./[id].module.css"
-import Link from "next/link";
 import { useStore } from "../../store/state/store";
 import { useForm } from '@mantine/form';
 import {fetchQuestion, postAnswer} from "../../store/plugins/api"
@@ -92,7 +90,7 @@ export default function Question() {
         setUpdate()
       },
       onSuccess: () => form.reset(),
-      onError: (error : any) => console.log("bad stuff", error)
+      onError: (error : Error) => setNotification({success:false, display:true, message: error.message})
   })
 
 

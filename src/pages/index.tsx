@@ -1,32 +1,30 @@
-import { questionType } from "../types";
 import QuestionCard from "@/components/Question";
 import Banner from "@/components/Banner";
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "../store/state/store";
 import {fetchQuestions} from "../store/plugins/api"
 import {useEffect } from "react";
+import { questionData } from "../types";
 
-type questionData = {
-  questions:  questionType[],
-  questionCount : number
-}
 
 export default function Home() {
   const setLoader = useStore((state) => state.setLoader)
   const setNotification = useStore((state) => state.setNotification)
-  const { data, isPending, isSuccess,isError, error } = useQuery({ queryKey: ['fetchQuestions'], queryFn: async () => {
+  const { data, isFetching, isSuccess,isError, error } = useQuery({ 
+    queryKey: ['fetchQuestions'], 
+    queryFn: async () => {
     const data : questionData = await fetchQuestions()
     return data
-  } })
+  }, staleTime: 10000 })
 
   useEffect(()=>{
-    if (isPending) setLoader(true);
+    if (isFetching) setLoader(true);
     if (isError) {
       setNotification({success:false, display:true, message: error.message})
       setLoader(false)}
     if (isSuccess) setLoader(false);
 
-  },[isPending,isSuccess])
+  },[isFetching ,isSuccess])
 
   return (
     <>

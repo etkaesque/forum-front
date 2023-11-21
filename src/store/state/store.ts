@@ -1,8 +1,5 @@
 import { create } from 'zustand'
-
-type notificationType = {
-  success: boolean, message: string, display: boolean
-}
+import { notificationType } from '@/types'
 
 export const useStore = create<{
   notification: notificationType,

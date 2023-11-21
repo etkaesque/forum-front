@@ -21,11 +21,15 @@ export default function AnswerCard(props : answer) {
 
   const setUpdate = useStore((state) => state.setUpdate)
   const setLoader = useStore((state) => state.setLoader)
+  const setNotification = useStore((state) => state.setNotification)
   const {id, name, content, user, date, author, upvoted, downvoted, upvoteCount, downvoteCount, questionId} = props
 
 
   const mutateUpvote = useMutation({
     mutationFn: handleUpvote,
+    onError: (error : any) => {
+      setNotification({success:false, display:true, message: error.message})
+      setLoader(false)},
     onMutate: () => setLoader(true),
     onSettled: () => 
     {
@@ -37,6 +41,9 @@ export default function AnswerCard(props : answer) {
 
   const mutateDownVote = useMutation({
     mutationFn: handleDownvote,
+    onError: (error : any) => {
+      setNotification({success:false, display:true, message: error.message})
+      setLoader(false)},
     onSettled: () => 
     {
     setLoader(false)
@@ -47,6 +54,9 @@ export default function AnswerCard(props : answer) {
 
   const mutateDelete = useMutation({
     mutationFn: deleteAnswer,
+    onError: (error : any) => {
+      setNotification({success:false, display:true, message: error.message})
+      setLoader(false)},
     onSettled: () => 
     {
     setLoader(false)
